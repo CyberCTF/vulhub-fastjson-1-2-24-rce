@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://www.isoloom.com/schema/v1.json
+# Fastjson 1.2.24 Deserialization RCE (Vulhub, by phith0n and the Vulhub contributors) as an Isoloom spec:
+# Vulhub's fastjson/1.2.24-rce, vendored in app/, run from the published image vulhub/fastjson:1.2.24.
+# `isoloom generate`, then `isoloom run docker`.
+version: 1
+name: vulhub-fastjson-1-2-24-rce
+
+networks:
+  lab: { cidr: 10.60.53.0/24, internet: true }  # the exploit calls back to the player's RMI/LDAP server
+
+machines:
+  web:
+    networks: { lab: 10 }
+    services: [{ port: 8090, name: web, http: true, publish: 8090 }]
+    resources: { cpus: 1, memory_mb: 512 }
+    docker:
+      image: vulhub/fastjson:1.2.24
+
+checks:
+  - name: the application answers
+    http: http://web:8090/
+    wait: 120
+  - name: a posted JSON body is parsed
+    script: checks/json.sh
+
+message: |
+  The Fastjson 1.2.24 application answers at http://localhost:{{ machines.web.services.0.publish }}/.
+  POST it a JSON object: Fastjson honours an @type key.

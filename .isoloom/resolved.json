@@ -1,0 +1,129 @@
+{
+  "generated_by_isoloom": "from isoloom.yml; don't edit: change the spec and run `isoloom generate` (`isoloom check` fails when this file is out of date)",
+  "resolved_version": 1,
+  "name": "vulhub-fastjson-1-2-24-rce",
+  "instance": null,
+  "inputs": [],
+  "networks": {
+    "lab": {
+      "cidr": "10.60.53.0/24",
+      "docker_cidr": "10.60.53.0/24",
+      "internet": true,
+      "gateway": null,
+      "gateway_address": "10.60.53.1",
+      "router": null,
+      "controller": "10.60.53.253"
+    }
+  },
+  "reach": [],
+  "machines": {
+    "web": {
+      "access": false,
+      "supplied": false,
+      "shapes": [
+        "docker"
+      ],
+      "arch": "amd64",
+      "os": null,
+      "windows": false,
+      "addresses": {
+        "lab": "10.60.53.10"
+      },
+      "docker_addresses": {
+        "lab": "10.60.53.10"
+      },
+      "services": [
+        {
+          "port": 8090,
+          "name": "web",
+          "http": true,
+          "publish": 8090
+        }
+      ],
+      "depends_on": [],
+      "inputs": [],
+      "volumes": {},
+      "resources": {
+        "cpus": 1,
+        "memory_mb": 512,
+        "disk_gb": 20
+      },
+      "gateway_of": [],
+      "routes": [],
+      "default_gateway": null,
+      "offline": false
+    }
+  },
+  "start_order": [
+    "web"
+  ],
+  "clones": {},
+  "tools": {},
+  "groups": {},
+  "router": null,
+  "controller": {
+    "addresses": {
+      "lab": "10.60.53.253"
+    }
+  },
+  "published": [
+    {
+      "machine": "web",
+      "port": 8090,
+      "host_port": 8090
+    }
+  ],
+  "targets": {
+    "possible": [
+      "docker",
+      "hosted",
+      "docker-vm",
+      "cloud-docker",
+      "kubernetes"
+    ],
+    "generated": [
+      "docker",
+      "hosted",
+      "docker-vm",
+      "cloud-docker",
+      "kubernetes"
+    ],
+    "refused": {},
+    "not_possible": {
+      "hybrid": "only when some machines are containers and others are VMs",
+      "vagrant": "needs `vm:` on web",
+      "proxmox": "needs `vm:` on web",
+      "cloud-vm": "needs `vm:` on web",
+      "external": "needs `external:` on web"
+    }
+  },
+  "checks": {
+    "default_position": "networks",
+    "positions": [
+      {
+        "position": "networks",
+        "machine": null,
+        "runner": "isoloom-check",
+        "checks": [
+          {
+            "name": "the application answers",
+            "derived": false,
+            "kind": "http",
+            "target": "http://web:8090/",
+            "expect": "200",
+            "wait": 120
+          },
+          {
+            "name": "a posted JSON body is parsed",
+            "derived": false,
+            "kind": "script",
+            "target": "checks/json.sh",
+            "expect": "",
+            "wait": 0
+          }
+        ]
+      }
+    ]
+  },
+  "message": "The Fastjson 1.2.24 application answers at http://localhost:8090/.\nPOST it a JSON object: Fastjson honours an @type key.\n"
+}
