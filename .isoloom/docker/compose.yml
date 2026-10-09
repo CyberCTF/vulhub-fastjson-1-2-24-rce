@@ -38,6 +38,8 @@ services:
           memory: 512M
     labels:
       isoloom.service.web: http:8090
+      isoloom.managed: 'true'
+      isoloom.environment: vulhub-fastjson-1-2-24-rce
     restart: unless-stopped
   isoloom-check:
     image: curlimages/curl:8.11.1
@@ -54,6 +56,9 @@ services:
     depends_on:
       web:
         condition: service_healthy
+    labels:
+      isoloom.managed: 'true'
+      isoloom.environment: vulhub-fastjson-1-2-24-rce
   isoloom-probe-amd64:
     image: busybox:1.37.0-musl
     platform: linux/amd64
@@ -65,11 +70,20 @@ services:
     - isoloom-probe-amd64:/probe
     network_mode: none
     restart: no
+    labels:
+      isoloom.managed: 'true'
+      isoloom.environment: vulhub-fastjson-1-2-24-rce
 networks:
   lab:
     ipam:
       config:
       - subnet: 10.60.53.0/24
         gateway: 10.60.53.1
+    labels:
+      isoloom.managed: 'true'
+      isoloom.environment: vulhub-fastjson-1-2-24-rce
 volumes:
-  isoloom-probe-amd64: {}
+  isoloom-probe-amd64:
+    labels:
+      isoloom.managed: 'true'
+      isoloom.environment: vulhub-fastjson-1-2-24-rce
