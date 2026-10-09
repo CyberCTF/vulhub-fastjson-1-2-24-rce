@@ -4,11 +4,5 @@
   "question": "Exploit the Fastjson 1.2.24 autoType deserialization to get a shell on the server.",
   "category": "WEB",
   "difficulty": 3,
-  "evidence_kind": "SECRET",
-  "capabilities": [
-    "java-deserialization",
-    "jndi-injection",
-    "remote-code-execution",
-    "fastjson"
-  ]
+  "evidence_kind": "SECRET"
 }
