@@ -5,6 +5,9 @@
 version: 1
 name: vulhub-fastjson-1-2-24-rce
 
+# Given by the CyberCTF launcher: this player's flag. Without it the development flag.
+inputs: [CTF_FLAG_MAIN]
+
 networks:
   lab: { cidr: 10.60.53.0/24, internet: true }  # the exploit calls back to the player's RMI/LDAP server
 
@@ -13,8 +16,11 @@ machines:
     networks: { lab: 10 }
     services: [{ port: 8090, name: web, http: true, publish: 8090 }]
     resources: { cpus: 1, memory_mb: 512 }
+    inputs: [CTF_FLAG_MAIN]
+    volumes: { ctf: /ctf }   # the flag, written by ctf/flag.sh at every start
     docker:
       image: vulhub/fastjson:1.2.24
+      init: [ctf/flag.sh]
 
 checks:
   - name: the application answers

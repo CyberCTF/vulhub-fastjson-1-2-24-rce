@@ -1,0 +1,75 @@
+{
+  "objectives": [
+    {
+      "key": "main",
+      "title": "Read the flag",
+      "prompt": "Exploit the autoType deserialization of Fastjson 1.2.24 to run a command on the server and read /ctf/flag.",
+      "check": {
+        "evidence": "SECRET",
+        "format": "FLAG{%s}"
+      },
+      "dev": "FLAG{dev-vulhub-fastjson-1-2-24-rce}",
+      "hints": [
+        "Fastjson 1.2.24 honours the @type key and instantiates the class it names; read the Fastjson security advisories about autoType.",
+        "The server reaches the internet, so the JNDI-based chains from public write-ups apply. The flag is at /ctf/flag."
+      ],
+      "steps": [
+        {
+          "key": "version",
+          "title": "Identify the product",
+          "prompt": "Which version of Fastjson does the application run? (number only)",
+          "check": {
+            "answer_regex": "1\\.2\\.24"
+          }
+        },
+        {
+          "key": "key",
+          "title": "Find the key",
+          "prompt": "Which JSON key tells Fastjson which class to instantiate? (key name)",
+          "check": {
+            "answer": [
+              "@type",
+              "type"
+            ]
+          }
+        },
+        {
+          "key": "feature",
+          "title": "Name the feature",
+          "prompt": "Which Fastjson feature is the weakness named after?",
+          "check": {
+            "answer": [
+              "autotype",
+              "auto type",
+              "auto-type"
+            ]
+          }
+        },
+        {
+          "key": "api",
+          "title": "Name the API",
+          "prompt": "Which Java naming API do the usual gadget classes call out through? (acronym)",
+          "check": {
+            "answer": [
+              "jndi"
+            ]
+          }
+        },
+        {
+          "key": "class",
+          "title": "Name the weakness",
+          "prompt": "Which vulnerability class is this?",
+          "check": {
+            "answer": [
+              "deserialization",
+              "java deserialization",
+              "insecure deserialization",
+              "deserialisation",
+              "insecure deserialisation"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
