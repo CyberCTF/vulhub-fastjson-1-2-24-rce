@@ -6,21 +6,29 @@ version: 1
 name: vulhub-fastjson-1-2-24-rce
 
 # Given by the CyberCTF launcher: this player's flag. Without it the development flag.
-inputs: [CTF_FLAG_MAIN]
+inputs:
+  CTF_FLAG_MAIN: {}
 
 networks:
-  lab: { cidr: 10.60.53.0/24, internet: true }  # the exploit calls back to the player's RMI/LDAP server
+  lab: {cidr: 10.60.53.0/24, internet: true}    # the exploit calls back to the player's RMI/LDAP server
 
 machines:
   web:
-    networks: { lab: 10 }
-    services: [{ port: 8090, name: web, http: true, publish: 8090 }]
-    resources: { cpus: 1, memory_mb: 512 }
-    inputs: [CTF_FLAG_MAIN]
-    volumes: { ctf: /ctf }   # the flag, written by ctf/flag.sh at every start
-    docker:
+    networks: {lab: 10}
+    resources: {cpus: 1, memory_mb: 512}
+    volumes: {ctf: /ctf}     # the flag, written by ctf/flag.sh at every start
+    ports:
+      web:
+        port: 8090
+        protocol: http
+        publish: true
+    files:
+      - path: /run/lab/ctf_flag_main
+        input: CTF_FLAG_MAIN
+    setup:
+      - ctf/flag.sh
+    app:
       image: vulhub/fastjson:1.2.24
-      init: [ctf/flag.sh]
 
 checks:
   - name: the application answers
@@ -30,5 +38,5 @@ checks:
     script: checks/json.sh
 
 message: |
-  The Fastjson 1.2.24 application answers at http://localhost:{{ machines.web.services.0.publish }}/.
+  The Fastjson 1.2.24 application answers at {{ machines.web.ports.web.url }}.
   POST it a JSON object: Fastjson honours an @type key.
