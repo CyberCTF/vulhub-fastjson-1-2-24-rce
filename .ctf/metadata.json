@@ -1,1 +1,11 @@
-{"title": "Fastjson 1.2.24 Deserialization RCE", "description": "A Java web application that parses request bodies with Fastjson 1.2.24, vulnerable to deserialization through @type: a JSON body can name a class such as JdbcRowSetImpl, whose setters make a JNDI lookup to the player's RMI or LDAP server.", "question": "Exploit the Fastjson 1.2.24 autoType deserialization to run commands on the server and read /ctf/flag.", "category": "WEB", "difficulty": 3, "evidence_kind": "SECRET"}
+{
+  "project_name": "cyberlabs-vulhub-fastjson-1-2-24-rce",
+  "slug": "vulhub-fastjson-1-2-24-rce",
+  "title": "Fastjson 1.2.24 Deserialization RCE",
+  "description": "A Java web application that parses request bodies with Fastjson 1.2.24, vulnerable to deserialization through @type: a JSON body can name a class such as JdbcRowSetImpl, whose setters make a JNDI lookup to the player's RMI or LDAP server.",
+  "category": "web",
+  "difficulty": 3,
+  "evidence_kind": "SECRET",
+  "capabilities": [],
+  "question": "Exploit the Fastjson 1.2.24 autoType deserialization to run commands on the server and read /ctf/flag."
+}
